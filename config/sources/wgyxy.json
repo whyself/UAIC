@@ -7,7 +7,7 @@
             "base_url": "https://sfs.nju.edu.cn",
             "list_url": "https://sfs.nju.edu.cn//xwgg/wydt/index.html",
             "api_url": "https://sfs.nju.edu.cn/njdx/openapi/t/info/list.do",
-            "max_pages": 5,
+            "max_pages": 3,
             "headers": {
                 "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
                 "host": "sfs.nju.edu.cn",
@@ -33,7 +33,7 @@
             "base_url": "https://sfs.nju.edu.cn",
             "list_url": "https://sfs.nju.edu.cn//xwgg/gltz/index.html",
             "api_url": "https://sfs.nju.edu.cn/njdx/openapi/t/info/list.do",
-            "max_pages": 10,
+            "max_pages": 3,
             "headers": {
                 "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
                 "host": "sfs.nju.edu.cn",
@@ -59,7 +59,7 @@
             "base_url": "https://sfs.nju.edu.cn",
             "list_url": "https://sfs.nju.edu.cn//xwgg/jzyhd/index.html",
             "api_url": "https://sfs.nju.edu.cn/njdx/openapi/t/info/list.do",
-            "max_pages": 10,
+            "max_pages": 3,
             "headers": {
                 "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
                 "host": "sfs.nju.edu.cn",
