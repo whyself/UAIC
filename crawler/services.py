@@ -234,7 +234,7 @@ def parse_publish_time(date_str: Optional[str]) -> datetime:
     尽力解析日期字符串，支持多种格式，失败则返回当前UTC时间（带时区）。
     """
     if not date_str:
-        return datetime.now()
+        return datetime.now(timezone.utc)
 
     # 确保转换为字符串，处理 API 返回整数的情况
     date_str = str(date_str).strip()
@@ -251,7 +251,7 @@ def parse_publish_time(date_str: Optional[str]) -> datetime:
     if md_match:
         month = int(md_match.group(1))
         day = int(md_match.group(2))
-        now = datetime.now()
+        now = datetime.now(timezone.utc)
         # 判断月日与当前日期关系
         if (month < now.month) or (month == now.month and day <= now.day):
             year = now.year
@@ -259,17 +259,18 @@ def parse_publish_time(date_str: Optional[str]) -> datetime:
             year = now.year - 1
         date_str_full = f"{year}-{month:02d}-{day:02d}"
         try:
-            return datetime.strptime(date_str_full, "%Y-%m-%d")
+            return datetime.strptime(date_str_full, "%Y-%m-%d").replace(tzinfo=timezone.utc)
         except ValueError:
             pass
 
     for fmt in ("%Y-%m-%d", "%Y/%m/%d", "%Y.%m.%d", "%Y%m%d"):
         try:
             dt = datetime.strptime(date_str, fmt)
-            return dt
+            # 补充时区信息
+            return dt.replace(tzinfo=timezone.utc)
         except ValueError:
             continue
-    return datetime.now()
+    return datetime.now(timezone.utc)
 
 
 
