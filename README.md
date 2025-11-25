@@ -41,10 +41,25 @@
 
 ## 目录结构说明
 - `crawler/`：爬虫模块主包，包含所有核心代码
+- `config/sources/`：爬虫源配置文件目录，每个学院/部门一个 JSON 文件
 - `main.py`：主应用入口，可直接运行
+- `test_config.py`：用于测试 JSON 配置文件的脚本
 - `requirements.txt`：依赖列表
 - `venv/`：虚拟环境目录（自动生成，无需提交到Git）
 - `.env`：环境变量配置文件（敏感信息请勿提交到Git）
+
+## 添加新的爬取源
+
+1. 在 `config/sources/` 目录下创建一个新的 JSON 文件（例如 `chem.json`）。
+2. 参照现有的 JSON 文件（如 `bksy.json`）填写 `sources` 和 `detail_selectors`。
+3. 运行测试脚本验证配置：
+   ```powershell
+   python test_config.py config/sources/chem.json <source_id>
+   ```
+   例如：
+   ```powershell
+   python test_config.py config/sources/bksy.json bksy_ggtz
+   ```
 
 ## 项目目录结构
 

@@ -1,0 +1,90 @@
+{
+  "sources": [
+    {
+      "id": "sxy_zxdt",
+      "name": "商学院-最新动态",
+      "base_url": "https://nubs.nju.edu.cn",
+      "list_url": "https://nubs.nju.edu.cn/8895/list.htm",
+      "max_pages": 1,
+      "headers": {
+        "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+        "host": "nubs.nju.edu.cn"
+      },
+      "selectors": {
+        "item_container": "#wp_news_w6 li.list_item",
+        "title": ".Article_Title a",
+        "date": ".Article_PublishDate",
+        "url": ".Article_Title a"
+      }
+    },
+    {
+      "id": "sxy_tzgg",
+      "name": "商学院-通知公告",
+      "base_url": "https://nubs.nju.edu.cn",
+      "list_url": "https://nubs.nju.edu.cn/8896/list.htm",
+      "max_pages": 1,
+      "headers": {
+        "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+        "host": "nubs.nju.edu.cn"
+      },
+      "selectors": {
+        "item_container": "#wp_news_w6 li.list_item",
+        "title": ".Article_Title a",
+        "date": ".Article_PublishDate",
+        "url": ".Article_Title a"
+      }
+    },
+    {
+      "id": "sxy_hdyg",
+      "name": "商学院-活动预告",
+      "base_url": "https://nubs.nju.edu.cn",
+      "list_url": "https://nubs.nju.edu.cn/8897/list.htm",
+      "max_pages": 1,
+      "headers": {
+        "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+        "host": "nubs.nju.edu.cn"
+      },
+      "selectors": {
+        "item_container": "#wp_news_w6 li.list_item",
+        "title": ".Article_Title a",
+        "date": ".Article_PublishDate",
+        "url": ".Article_Title a"
+      }
+    },
+    {
+      "id": "sxy_sysd",
+      "name": "商学院-商院视点",
+      "base_url": "https://nubs.nju.edu.cn",
+      "list_url": "https://nubs.nju.edu.cn/8898/list.htm",
+      "max_pages": 1,
+      "headers": {
+        "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+        "host": "nubs.nju.edu.cn"
+      },
+      "selectors": {
+        "item_container": "#wp_news_w6 li.list_item",
+        "title": ".Article_Title a",
+        "date": ".Article_PublishDate",
+        "url": ".Article_Title a"
+      }
+    },
+    {
+      "id": "sxy_zbcg",
+      "name": "商学院-招标采购",
+      "base_url": "https://nubs.nju.edu.cn",
+      "list_url": "https://nubs.nju.edu.cn/zbcg/list.htm",
+      "max_pages": 1,
+      "headers": {
+        "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+        "host": "nubs.nju.edu.cn"
+      },
+      "selectors": {
+        "item_container": "#wp_news_w6 li.list_item",
+        "title": ".Article_Title a",
+        "date": ".Article_PublishDate",
+        "url": ".Article_Title a"
+      }
+    }
+  ],
+  "detail_selectors": []
+}
