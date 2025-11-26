@@ -670,7 +670,7 @@ async def crawl_source(source_id: str) -> List[CrawlItem]:
             "source_id": source_cfg["id"],
             "source_name": source_cfg["name"],
             "title": entry.get("title"),
-            "publish_time": publish_time.isoformat(),
+            "publish_time": publish_time.strftime("%Y-%m-%d"),
             "attachments": attachments_payload,
         }
         # 本地存储文档内容及元数据
