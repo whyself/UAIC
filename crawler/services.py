@@ -267,6 +267,18 @@ def parse_publish_time(date_str: Optional[str]) -> datetime:
         # 假设格式为 Day/Year/Month
         date_str = f"{year}-{p2.zfill(2)}-{p1.zfill(2)}"
 
+    # 特殊格式处理：Month-Day/ Year (e.g., "11-13/ 2025" -> "2025-11-13")
+    # 这种格式出现在信息管理学院等网站
+    mdy_ws_year = re.match(r"^(\d{1,2})[-/.](\d{1,2})\s*/\s*(\d{4})$", date_str)
+    if mdy_ws_year:
+        month = int(mdy_ws_year.group(1))
+        day = int(mdy_ws_year.group(2))
+        year = int(mdy_ws_year.group(3))
+        try:
+            return datetime(year, month, day).replace(tzinfo=timezone.utc)
+        except ValueError:
+            pass
+
     # 新增：仅有月日的情况（如 "11-25" 或 "11/25" 或 "11.25"）
     md_match = re.match(r"^(\d{1,2})[-/.](\d{1,2})$", date_str)
     if md_match:
