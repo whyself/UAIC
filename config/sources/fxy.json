@@ -1,0 +1,175 @@
+{
+    "sources": [
+        {
+            "id": "fxy_xyxw",
+            "name": "法学院-学院新闻",
+            "base_url": "https://law.nju.edu.cn",
+            "list_url": "https://law.nju.edu.cn/index/xyxw.htm",
+            "max_pages": 1,
+            "headers": {
+                "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+                "host": "law.nju.edu.cn"
+            },
+            "selectors": {
+                "item_container": ".n_rightBox.n_list02 ul > li",
+                "url": "a.flex",
+                "title": ".text h5",
+                "date": ".text i",
+                "summary": ".text p",
+                "img": ".pic img[src]"
+            }
+        },
+        {
+            "id": "fxy_zyhd",
+            "name": "法学院-重要活动",
+            "base_url": "https://law.nju.edu.cn",
+            "list_url": "https://law.nju.edu.cn/index/zyhd.htm",
+            "max_pages": 1,
+            "headers": {
+                "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+                "host": "law.nju.edu.cn"
+            },
+            "selectors": {
+                "item_container": ".n_rightBox.n_list02 ul > li",
+                "url": "a.flex",
+                "title": ".text h5",
+                "date": ".text i",
+                "summary": ".text p",
+                "img": ".pic img[src]"
+            }
+        },
+        {
+            "id": "fxy_tzgg",
+            "name": "法学院-通知公告",
+            "base_url": "https://law.nju.edu.cn",
+            "list_url": "https://law.nju.edu.cn/index/tzgg.htm",
+            "max_pages": 1,
+            "headers": {
+                "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+                "host": "law.nju.edu.cn"
+            },
+            "selectors": {
+                "item_container": ".n_rightBox.n_list01 ul > li",
+                "url": "a",
+                "title": "a",
+                "date": "i",
+                "summary": "p",
+                "img": ""
+            }
+        },
+        {
+            "id": "fxy_zyhd",
+            "name": "法学院-重要活动",
+            "base_url": "https://law.nju.edu.cn",
+            "list_url": "https://law.nju.edu.cn/index/zyhd.htm",
+            "max_pages": 1,
+            "headers": {
+                "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+                "host": "law.nju.edu.cn"
+            },
+            "selectors": {
+                "item_container": ".n_rightBox.n_list02 ul > li",
+                "url": "a.flex",
+                "title": ".text h5",
+                "date": ".text i",
+                "summary": ".text p",
+                "img": ".pic img[src]"
+            }
+        },
+        {
+            "id": "fxy_tzgg",
+            "name": "法学院-通知公告",
+            "base_url": "https://law.nju.edu.cn",
+            "list_url": "https://law.nju.edu.cn/index/tzgg.htm",
+            "max_pages": 1,
+            "headers": {
+                "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+                "host": "law.nju.edu.cn"
+            },
+            "selectors": {
+                "item_container": ".n_rightBox.n_list02 ul > li",
+                "url": "a.flex",
+                "title": ".text h5",
+                "date": ".text i",
+                "summary": ".text p",
+                "img": ".pic img[src]"
+            }
+        },
+        {
+            "id": "fxy_xyxw",
+            "name": "法学院-学院新闻",
+            "base_url": "https://law.nju.edu.cn",
+            "list_url": "https://law.nju.edu.cn/index/xyxw.htm",
+            "max_pages": 1,
+            "headers": {
+                "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+                "host": "law.nju.edu.cn"
+            },
+            "selectors": {
+                "item_container": ".n_rightBox.n_list02 ul > li",
+                "url": "a.flex",
+                "title": ".text h5",
+                "date": ".text i",
+                "summary": ".text p",
+                "img": ".pic img[src]"
+            }
+        },
+        {
+            "id": "fxy_zyhd",
+            "name": "法学院-重要活动",
+            "base_url": "https://law.nju.edu.cn",
+            "list_url": "https://law.nju.edu.cn/index/zyhd.htm",
+            "max_pages": 1,
+            "headers": {
+                "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+                "host": "law.nju.edu.cn"
+            },
+            "selectors": {
+                "item_container": ".n_rightBox.n_list02 ul > li",
+                "url": "a.flex",
+                "title": ".text h5",
+                "date": ".text i",
+                "summary": ".text p",
+                "img": ".pic img[src]"
+            }
+        }
+    ],
+    "detail_selectors": [
+        {
+            "base_url": "https://law.nju.edu.cn",
+            "meta_selector": {
+                "title": ".show01 h5",
+                "publish_time": ".show01 p em:first-child",
+                "views": ".show01 p em:last-child"
+            },
+            "text_selector": {
+                "item_container": "#vsb_content .v_news_content",
+                "content": "#vsb_content .v_news_content",
+                "title": ".show01 h5"
+            },
+            "img_selector": {
+                "item_container": "#vsb_content .v_news_content",
+                "images": "img[src]"
+            },
+            "pdf_selector": {
+                "item_container": "#vsb_content .v_news_content",
+                "files": "a[href$='.pdf']",
+                "name": "a[href$='.pdf']"
+            },
+            "doc_selector": {
+                "item_container": "#vsb_content .v_news_content",
+                "files": "a[href$='.doc'], a[href$='.docx']",
+                "name": "a[href$='.doc'], a[href$='.docx']"
+            },
+            "embedded_pdf_selector": {
+                "item_container": "#vsb_content .v_news_content",
+                "viewer": "iframe[src*='.pdf']",
+                "download_link": "a[href$='.pdf']"
+            },
+            "next_selector": {
+                "item_container": ".show03",
+                "next": "a"
+            }
+        }
+    ]
+}

@@ -1,0 +1,55 @@
+{
+    "sources": [
+        {
+            "id": "lsxy_xyxw",
+            "name": "历史学院-学院新闻",
+            "base_url": "https://history.nju.edu.cn",
+            "list_url": "https://history.nju.edu.cn/28497/list.htm",
+            "max_pages": 1,
+            "headers": {
+                "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+                "host": "history.nju.edu.cn"
+            },
+            "selectors": {
+                "item_container": "ul.cols_list > li.cols",
+                "title": "span.cols_title a",
+                "url": "span.cols_title a",
+                "date": "span.cols_meta"
+            }
+        },
+        {
+            "id": "lsxy_ggtz",
+            "name": "历史学院-公告通知",
+            "base_url": "https://history.nju.edu.cn",
+            "list_url": "https://history.nju.edu.cn/28498/list.htm",
+            "max_pages": 1,
+            "headers": {
+                "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+                "host": "history.nju.edu.cn"
+            },
+            "selectors": {
+                "item_container": "ul.cols_list > li.cols",
+                "title": "span.cols_title a",
+                "url": "span.cols_title a",
+                "date": "span.cols_meta"
+            }
+        }
+    ],
+    "detail_selectors": [
+        {
+            "base_url": "https://history.nju.edu.cn",
+            "meta_selector": {
+                "item_container": ".info-box",
+                "title": ".arti-title",
+                "publish_time": ".arti-update",
+                "publisher": ".arti-source",
+                "views": ".arti-views .WP_VisitCount"
+            },
+            "text_selector": {
+                "item_container": ".info-box",
+                "content": ".wp_articlecontent",
+                "images": ".wp_articlecontent img"
+            }
+        }
+    ]
+}
