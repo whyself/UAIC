@@ -4,7 +4,8 @@
             "id": "xxglxy_ggtz",
             "name": "信息管理学院-公告通知",
             "base_url": "https://im.nju.edu.cn",
-            "list_url": "https://im.nju.edu.cn/xwdt/ggtz/xggg.htm",
+            "list_url": "https://im.nju.edu.cn/xwdt/ggtz/xggg/1.htm",
+            "pagination_mode": "reverse",
             "max_pages": 1,
             "headers": {
                 "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
@@ -21,7 +22,8 @@
             "id": "xxglxy_jxdt",
             "name": "信息管理学院-教学动态",
             "base_url": "https://im.nju.edu.cn",
-            "list_url": "https://im.nju.edu.cn/xwdt/jxdt.htm",
+            "list_url": "https://im.nju.edu.cn/xwdt/jxdt/1.htm",
+            "pagination_mode": "reverse",
             "max_pages": 1,
             "headers": {
                 "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
@@ -38,7 +40,8 @@
             "id": "xxglxy_xsdt",
             "name": "信息管理学院-学术动态",
             "base_url": "https://im.nju.edu.cn",
-            "list_url": "https://im.nju.edu.cn/xwdt/xsdt.htm",
+            "list_url": "https://im.nju.edu.cn/xwdt/xsdt/1.htm",
+            "pagination_mode": "reverse",
             "max_pages": 1,
             "headers": {
                 "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
@@ -55,7 +58,8 @@
             "id": "xxglxy_dqgz",
             "name": "信息管理学院-党群工作",
             "base_url": "https://im.nju.edu.cn",
-            "list_url": "https://im.nju.edu.cn/xwdt/dqgz.htm",
+            "list_url": "https://im.nju.edu.cn/xwdt/dqgz/1.htm",
+            "pagination_mode": "reverse",
             "max_pages": 1,
             "headers": {
                 "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
@@ -72,7 +76,8 @@
             "id": "xxglxy_zsdt",
             "name": "信息管理学院-招生动态",
             "base_url": "https://im.nju.edu.cn",
-            "list_url": "https://im.nju.edu.cn/xwdt/zsdt.htm",
+            "list_url": "https://im.nju.edu.cn/xwdt/zsdt/1.htm",
+            "pagination_mode": "reverse",
             "max_pages": 1,
             "headers": {
                 "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
@@ -89,7 +94,8 @@
             "id": "xxglxy_xgdt",
             "name": "信息管理学院-学工动态",
             "base_url": "https://im.nju.edu.cn",
-            "list_url": "https://im.nju.edu.cn/xwdt/xgdt.htm",
+            "list_url": "https://im.nju.edu.cn/xwdt/xgdt/1.htm",
+            "pagination_mode": "reverse",
             "max_pages": 1,
             "headers": {
                 "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
@@ -106,7 +112,8 @@
             "id": "xxglxy_shfw",
             "name": "信息管理学院-社会服务",
             "base_url": "https://im.nju.edu.cn",
-            "list_url": "https://im.nju.edu.cn/xwdt/shfw.htm",
+            "list_url": "https://im.nju.edu.cn/xwdt/shfw/1.htm",
+            "pagination_mode": "reverse",
             "max_pages": 1,
             "headers": {
                 "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
@@ -123,7 +130,8 @@
             "id": "xxglxy_xwsd",
             "name": "信息管理学院-新闻速递",
             "base_url": "https://im.nju.edu.cn",
-            "list_url": "https://im.nju.edu.cn/xwsd.htm",
+            "list_url": "https://im.nju.edu.cn/xwsd/1.htm",
+            "pagination_mode": "reverse",
             "max_pages": 1,
             "headers": {
                 "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",

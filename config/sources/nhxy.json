@@ -4,7 +4,8 @@
       "id": "nhxy_xyxw",
       "name": "南赫学院-学院新闻",
       "base_url": "https://nh.nju.edu.cn",
-      "list_url": "https://nh.nju.edu.cn/index/xyxw.htm",
+      "list_url": "https://nh.nju.edu.cn/index/xyxw/1.htm",
+      "pagination_mode": "reverse",
       "max_pages": 1,
       "headers": {
         "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
@@ -21,7 +22,8 @@
     "id": "nh_zxtz",
     "name": "南赫学院-通知公告", 
     "base_url": "https://nh.nju.edu.cn",
-    "list_url": "https://nh.nju.edu.cn/index/zxtz.htm",
+    "list_url": "https://nh.nju.edu.cn/index/zxtz/1.htm",
+    "pagination_mode": "reverse",
     "max_pages": 1,
     "headers": {
         "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
