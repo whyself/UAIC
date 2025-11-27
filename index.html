@@ -219,8 +219,8 @@
                     </div>
 
                     <div v-if="selectedItem" class="p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
-                        <a :href="selectedItem.url" target="_blank" class="text-sm font-medium text-purple-700 hover:text-purple-900">
-                            查看原文链接：{{ selectedItem.url }}
+                        <a :href="cleanUrl(selectedItem.url)" target="_blank" class="text-sm font-medium text-purple-700 hover:text-purple-900">
+                            查看原文链接：{{ cleanUrl(selectedItem.url) }}
                         </a>
                     </div>
                 </div>
@@ -495,6 +495,11 @@
 
                 // 导出为 Word
                 const exportToWord = () => {
+                    const bodyFontSize = '12pt';      // 正文字体大小
+                    const h1FontSize = '18pt';        // 主标题
+                    const h2FontSize = '12pt';        // 二级标题
+                    const listFontSize = bodyFontSize;
+
                     let htmlContent = `
                         <!DOCTYPE html>
                         <html lang="zh-CN">
@@ -502,13 +507,13 @@
                             <meta charset="UTF-8">
                             <title>南京大学教育资讯</title>
                             <style>
-                                body { font-family: 'SimSun', '宋体', serif; font-size: 14pt; }
-                                h1 { text-align: center; font-family: 'SimHei', '黑体', sans-serif; }
-                                h2 { font-family: 'SimHei', '黑体', sans-serif; font-size: 16pt; margin-top: 20px; margin-bottom: 10px; }
-                                ul { list-style-type: none; padding-left: 20px; }
-                                li { margin-bottom: 8px; }
-                                p { margin-left: 20px; color: #555; }
-                                a { color: #0000FF; text-decoration: none; }
+                                body { font-family: 'SimSun','宋体',serif; font-size: ${bodyFontSize}; }
+                                h1 { text-align: center; font-family: 'SimHei','宋体',sans-serif; font-size: ${h1FontSize}; margin: 16px 0; }
+                                h2 { font-family: 'SimHei','宋体',sans-serif; font-size: ${h2FontSize}; margin-top: 18px; margin-bottom: 8px; }
+                                ul { list-style-type: none; padding-left: 24px; font-size: ${listFontSize}; }
+                                li { margin-bottom: 6px; }
+                                p { margin-left: 24px; color: #555; font-size: ${bodyFontSize}; }
+                                a { color: #0000FF; text-decoration: none; font-size: ${bodyFontSize}; }
                             </style>
                         </head>
                         <body>
@@ -526,8 +531,8 @@
                         } else {
                             htmlContent += `<ul>`;
                             source.items.forEach(item => {
-                                // 避免 URL 换行
-                                htmlContent += `<li> ${item.title} <a href="${item.url}">${item.url}</a></li>`;
+                                const clean = cleanUrl(item.url);
+                                htmlContent += `<li> ${item.title} <a href="${clean}">${clean}</a></li>`;
                             });
                             htmlContent += `</ul>`;
                         }
@@ -537,6 +542,12 @@
                     
                     const blob = new Blob([htmlContent], { type: "application/msword;charset=utf-8" });
                     saveAs(blob, `南京大学教育资讯_${dateRange.value.start}_${dateRange.value.end}.doc`);
+                };
+
+                // 统一的链接精简函数：去除查询参数与锚点
+                const cleanUrl = (url) => {
+                    if (!url) return '';
+                    return url.split('?')[0].split('#')[0];
                 };
 
 
@@ -564,6 +575,7 @@
                     selectAllSources,
                     deselectAllSources,
                     exportToWord,
+                    cleanUrl,
                 };
             }
         }).mount('#app');
