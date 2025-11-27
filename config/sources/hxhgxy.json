@@ -41,7 +41,7 @@
             "name": "化学化工学院-院内通知",
             "base_url": "https://chem.nju.edu.cn",
             "list_url": "https://chem.nju.edu.cn/12641/list.htm",
-            "max_pages": 1,
+            "max_pages": 3,
             "pagination_mode": "forward",
             "headers": {
                 "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",

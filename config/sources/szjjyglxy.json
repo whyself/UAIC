@@ -5,7 +5,7 @@
       "name": "数字经济与管理学院-通知公告",
       "base_url": "https://sdem.nju.edu.cn/",
       "list_url": "https://sdem.nju.edu.cn/56988/list1.htm",
-      "max_pages": 5,
+      "max_pages": 3,
       "pagination_mode": "forward",
       "headers": {
         "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
@@ -24,7 +24,7 @@
       "name": "数字经济与管理学院-学院新闻",
       "base_url": "https://sdem.nju.edu.cn/",
       "list_url": "https://sdem.nju.edu.cn/56973/list1.htm",
-      "max_pages": 5,
+      "max_pages": 3,
       "pagination_mode": "forward",
       "headers": {
         "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
