@@ -219,8 +219,8 @@
                     </div>
 
                     <div v-if="selectedItem" class="p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
-                        <a :href="selectedItem.url" target="_blank" class="text-sm font-medium text-purple-700 hover:text-purple-900">
-                            查看原文链接：{{ selectedItem.url }}
+                        <a :href="cleanUrl(selectedItem.url)" target="_blank" class="text-sm font-medium text-purple-700 hover:text-purple-900">
+                            查看原文链接：{{ cleanUrl(selectedItem.url) }}
                         </a>
                     </div>
                 </div>
@@ -526,8 +526,8 @@
                         } else {
                             htmlContent += `<ul>`;
                             source.items.forEach(item => {
-                                // 避免 URL 换行
-                                htmlContent += `<li> ${item.title} <a href="${item.url}">${item.url}</a></li>`;
+                                const clean = cleanUrl(item.url);
+                                htmlContent += `<li> ${item.title} <a href="${clean}">${clean}</a></li>`;
                             });
                             htmlContent += `</ul>`;
                         }
@@ -537,6 +537,12 @@
                     
                     const blob = new Blob([htmlContent], { type: "application/msword;charset=utf-8" });
                     saveAs(blob, `南京大学教育资讯_${dateRange.value.start}_${dateRange.value.end}.doc`);
+                };
+
+                // 统一的链接精简函数：去除查询参数与锚点
+                const cleanUrl = (url) => {
+                    if (!url) return '';
+                    return url.split('?')[0].split('#')[0];
                 };
 
 
@@ -564,6 +570,7 @@
                     selectAllSources,
                     deselectAllSources,
                     exportToWord,
+                    cleanUrl,
                 };
             }
         }).mount('#app');
