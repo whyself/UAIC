@@ -89,6 +89,7 @@ pytesseract.pytesseract.tesseract_cmd = TESSERACT_CMD
 
 # 列表页翻页URL正则匹配
 PAGINATION_PATTERN = re.compile(r"(list)(\d+)(\.htm)$", re.IGNORECASE)
+PARAGRAPH_CLOSE_PATTERN = re.compile(r"</p\s*>", re.IGNORECASE)
 
 
 
@@ -178,7 +179,8 @@ def parse_list(html: str, selectors: dict, base_url: str) -> List[dict]:
     用CSS选择器解析列表页，提取每条公告/文章的基本信息。
     返回：包含title、date、url、type的字典列表。
     """
-    soup = BeautifulSoup(html, "lxml")
+    html_with_newlines = PARAGRAPH_CLOSE_PATTERN.sub("</p>\n", html)
+    soup = BeautifulSoup(html_with_newlines, "lxml")
     items = soup.select(selectors["item_container"])
     results = []
     for item in items:

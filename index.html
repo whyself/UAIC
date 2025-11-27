@@ -153,14 +153,14 @@
                 <div v-if="!isLoading && !error && groupedResults.length > 0" class="space-y-3">
                     <div v-for="source in groupedResults" :key="source.id" class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300">
                         <!-- 信息源卡片 (可点击展开) -->
-                        <div
+                            <div
                             @click="toggleSource(source.id)"
                             class="p-4 flex justify-between items-center cursor-pointer hover:bg-gray-50">
                             <h2 class="text-lg font-semibold nju-purple">{{ source.name }}</h2>
                             <div class="flex items-center space-x-2">
                                 <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">{{ source.items.length }} 条</span>
                                 <svg class="w-6 h-6 text-gray-500 transition-transform duration-300"
-                                     :class="{'rotate-180': activeSourceId === source.id}"
+                                     :class="{'rotate-180': isSourceExpanded(source.id)}"
                                      fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                 </svg>
@@ -175,7 +175,7 @@
                             leave-active-class="transition ease-in duration-200"
                             leave-from-class="transform opacity-100 scale-y-100 translate-y-0"
                             leave-to-class="transform opacity-0 scale-y-95 -translate-y-2">
-                            <div v-if="activeSourceId === source.id" class="border-t border-gray-200">
+                            <div v-if="isSourceExpanded(source.id)" class="border-t border-gray-200">
                                 <div v-if="source.items.length > 0" class="divide-y divide-gray-100">
                                     <div v-for="item in source.items" :key="item.id"
                                         @click="selectItem(item)"
@@ -210,7 +210,7 @@
                         <h3 class="text-lg font-semibold text-gray-800">内容预览</h3>
                     </div>
                     
-                    <div v-if="selectedItem" class="flex-1 p-5 overflow-y-auto scrollbar-hide preview-content" v-html="selectedItem.content">
+                    <div v-if="selectedItem" class="flex-1 p-5 overflow-y-auto scrollbar-hide preview-content" v-html="renderedContent">
                         <!-- 内容通过 v-html 渲染 -->
                     </div>
 
@@ -352,8 +352,14 @@
                 const results = ref([]); // 原始 API 返回数据
 
                 // UI 状态
-                const activeSourceId = ref(null); // 当前展开的分类
+                const activeSourceIds = ref([]); // 当前展开的分类集合
                 const selectedItem = ref(null); // 当前预览的文章
+                const renderedContent = computed(() => {
+                    if (!selectedItem.value || !selectedItem.value.content) {
+                        return '';
+                    }
+                    return selectedItem.value.content.replace(/\n/g, '<br><br>');
+                });
 
                 // --- 计算属性 (Computed) ---
 
@@ -425,8 +431,15 @@
 
                 // 切换分类展开
                 const toggleSource = (id) => {
-                    activeSourceId.value = (activeSourceId.value === id) ? null : id;
+                    const idx = activeSourceIds.value.indexOf(id);
+                    if (idx >= 0) {
+                        activeSourceIds.value.splice(idx, 1);
+                    } else {
+                        activeSourceIds.value.push(id);
+                    }
                 };
+
+                const isSourceExpanded = (id) => activeSourceIds.value.includes(id);
 
                 // 选择预览文章
                 const selectItem = (item) => {
@@ -469,9 +482,9 @@
                              // 默认展开第一个有内容的分类
                              const firstSourceWithItems = groupedResults.value.find(g => g.items.length > 0);
                              if (firstSourceWithItems) {
-                                 activeSourceId.value = firstSourceWithItems.id;
+                                 activeSourceIds.value = [firstSourceWithItems.id];
                              } else {
-                                 activeSourceId.value = null;
+                                 activeSourceIds.value = [];
                              }
                         } else {
                             results.value = [];
@@ -565,11 +578,13 @@
                     isLoading,
                     error,
                     results,
-                    activeSourceId,
+                    activeSourceIds,
                     selectedItem,
                     groupedResults,
+                    renderedContent,
                     fetchData,
                     toggleSource,
+                    isSourceExpanded,
                     selectItem,
                     formatTime,
                     selectAllSources,
