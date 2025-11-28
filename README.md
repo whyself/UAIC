@@ -1,5 +1,10 @@
 # nju_crawler
-
+## 环境要求
+- Python 3.8 及以上
+- Windows 操作系统（建议）
+- 浏览器驱动（如 geckodriver for Firefox）
+- 推荐使用虚拟环境
+- 微信你得有微信公众平台账号，可以去[微信公众平台](https://mp.weixin.qq.com/)注册
 ## 快速开始（开发环境搭建）
 
 1. 创建并激活虚拟环境：
@@ -13,7 +18,22 @@
    pip install -r requirements.txt
    ```
 
-3. 配置环境变量（推荐使用 .env 文件）
+3. 下载并配置浏览器驱动（如 geckodriver），确保其在系统 PATH 中。
+
+   可以通过命令行安装：  
+   ```
+   winget install Mozilla.Firefox
+   ```
+   或手动前往 [Firefox 官网](https://www.mozilla.org/zh-CN/firefox/new/) 下载并安装。
+   geckodriver 是 Firefox 的 WebDriver，Selenium 需要它来驱动浏览器。  
+   - 推荐命令行安装：  
+     ```
+     winget install mozilla.geckodriver
+     ```
+   - 或手动下载：[geckodriver Releases](https://github.com/mozilla/geckodriver/releases)  
+     下载后将 `geckodriver.exe` 放到你的项目目录或添加到系统 PATH 环境变量中。
+
+4. 配置环境变量（推荐使用 .env 文件）
    - 在项目根目录新建 `.env` 文件，内容参考如下：
      ```env
      CRAWL_INTERVAL=3600
@@ -28,14 +48,14 @@
    - 所有配置项均可通过 `.env` 文件注入，无需硬编码在 config.py。
    - 推荐使用 [python-dotenv](https://github.com/theskumar/python-dotenv) 自动加载 `.env` 文件。
 
-4. 启动主应用（独立服务模式）：
+5. 启动主应用（独立服务模式）：
    ```powershell
    python main.py
    # 或
    uvicorn main:app --reload
    ```
 
-5. 打开 API 文档：
+6. 打开 API 文档：
    - Swagger UI: http://127.0.0.1:8000/docs
    - ReDoc: http://127.0.0.1:8000/redoc
 

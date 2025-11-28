@@ -132,6 +132,9 @@ ENV/
 env.bak/
 venv.bak/
 
+# Project-specific sensitive files
+cfg/
+
 # Spyder project settings
 .spyderproject
 .spyproject

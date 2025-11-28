@@ -55,6 +55,7 @@ def parse_wechat_article(html: str) -> str:
 		meta["Time"]=create_time
 	if content:
 		meta["Content"]=content
+	
 
 	# full_text = "\n".join(meta) + "\n\n" + content
 	return meta
@@ -221,7 +222,7 @@ async def fetch_html(url: str, timeout: int = REQUEST_TIMEOUT) -> str:
 async def crawl_single_article(url: str, source_id: Optional[str] = None, source_name: Optional[str] = None) -> Optional[CrawlItem]:
 	html = await fetch_html(url)
 	meta = parse_wechat_article(html)
-	content=meta["Content"]
+	content=meta["Content"] or ""
 	title=meta["Title"]
 	create_time=meta["Time"]
 	item_id = compute_sha256((content or "")[:500], url)
@@ -311,4 +312,3 @@ async def crawl_wechat_source(source_id: str) -> List[CrawlItem]:
 				continue
 		print(f"\n[SUCCESS] Source '公众号：{src.get('name')}' crawled successfully. {len(results)} new items added.")
 	return results
-
