@@ -2,7 +2,13 @@ from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException
 
-from .models import WechatRequest, SingleRequest, ErrorResponse
+from .models import (
+    WechatRequest,
+    SingleRequest,
+    ErrorResponse,
+    SessionUpdateRequest,
+    SessionUpdateResponse,
+)
 from . import services
 from .config import WECHAT_SOURCES
 from crawler.models import CrawlResponse, CrawlItem
@@ -33,4 +39,19 @@ async def wechat_single(payload: SingleRequest) -> CrawlResponse:
 		return CrawlResponse(data=[item] if item else [])
 	except Exception as exc:
 		raise HTTPException(status_code=400, detail=str(exc))
+
+
+@router.post(
+    "/api/session",
+    response_model=SessionUpdateResponse,
+    responses={400: {"model": ErrorResponse}, 500: {"model": ErrorResponse}},
+)
+async def upsert_session(payload: SessionUpdateRequest) -> SessionUpdateResponse:
+    try:
+        session_data = services.upsert_session(payload.dict(exclude_unset=True))
+        return SessionUpdateResponse(session=session_data)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except OSError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
 
