@@ -85,6 +85,16 @@
             "text_selector": {
                 "item_container": "#word",
                 "content": "p"
+            },
+            "doc_selector": {
+                "item_container": "#word",
+                "files": "p a[href$=\".doc\"], p a[href$=\".docx\"]",
+                "name": "p a[href$=\".doc\"], p a[href$=\".docx\"]"
+            },
+            "img_selector": {
+                "item_container": "#word",
+                "files": "img[src]",
+                "name": "img[src]"
             }
         }
     ]
