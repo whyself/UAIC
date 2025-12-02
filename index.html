@@ -189,7 +189,11 @@
                             <div
                             @click="toggleSource(source.id)"
                             class="p-4 flex justify-between items-center cursor-pointer hover:bg-gray-50">
-                            <h2 class="text-lg font-semibold nju-purple">{{ source.name }}</h2>
+                            <div class="flex items-center gap-2 min-w-0 flex-1 mr-2">
+                                <h2 class="text-sm md:text-lg font-semibold nju-purple truncate">{{ source.name }}</h2>
+                                <span v-if="source.id.startsWith('wechat_')" class="flex-shrink-0 bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded border border-green-200">公众号</span>
+                                <span v-else class="flex-shrink-0 bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded border border-blue-200">官网</span>
+                            </div>
                             <div class="flex items-center space-x-2">
                                 <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">{{ source.items.length }} 条</span>
                                 <svg class="w-6 h-6 text-gray-500 transition-transform duration-300"
@@ -289,65 +293,9 @@
                             </div>
                             
                             <div class="p-6 overflow-y-auto flex-1 space-y-6">
-                                <!-- 1. 时间范围 -->
+                                <!-- 1. 关键词 -->
                                 <div>
-                                    <h4 class="text-sm font-bold text-gray-700 mb-2 border-l-4 border-purple-600 pl-2">1. 时间范围</h4>
-                                    <div class="flex gap-4">
-                                        <div class="flex-1">
-                                            <label class="block text-xs text-gray-500 mb-1">开始日期</label>
-                                            <input type="date" v-model="currentRule.start" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
-                                        </div>
-                                        <div class="flex-1">
-                                            <label class="block text-xs text-gray-500 mb-1">结束日期</label>
-                                            <input type="date" v-model="currentRule.end" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- 2. 信息源 -->
-                                <div>
-                                    <h4 class="text-sm font-bold text-gray-700 mb-2 border-l-4 border-purple-600 pl-2">2. 信息源</h4>
-                                    
-                                    <div class="flex flex-col md:flex-row gap-4 h-80 md:h-60">
-                                        <!-- 官网 -->
-                                        <div class="flex-1 border rounded-md p-2 flex flex-col min-h-0">
-                                            <div class="flex justify-between items-center mb-2 bg-gray-50 px-2 py-1 rounded flex-shrink-0">
-                                                <span class="text-xs font-semibold text-gray-500">官网 / 学院网站</span>
-                                                <div class="space-x-2 text-xs">
-                                                    <button @click="selectAllOfficial" class="text-purple-600 hover:underline">全选</button>
-                                                    <button @click="deselectAllOfficial" class="text-purple-600 hover:underline">清空</button>
-                                                </div>
-                                            </div>
-                                            <div class="overflow-y-auto flex-1 space-y-1">
-                                                <div v-for="source in officialSources" :key="source.id" class="flex items-center">
-                                                    <input :id="'rule-cb-' + source.id" type="checkbox" :value="source.id" v-model="currentRule.sourceIds" class="h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
-                                                    <label :for="'rule-cb-' + source.id" class="ml-2 block text-sm text-gray-900 truncate" :title="source.name">{{ source.name }}</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- 公众号 -->
-                                        <div class="flex-1 border rounded-md p-2 flex flex-col">
-                                            <div class="flex justify-between items-center mb-2 bg-gray-50 px-2 py-1 rounded">
-                                                <span class="text-xs font-semibold text-gray-500">微信公众号</span>
-                                                <div class="space-x-2 text-xs">
-                                                    <button @click="selectAllWechat" class="text-purple-600 hover:underline">全选</button>
-                                                    <button @click="deselectAllWechat" class="text-purple-600 hover:underline">清空</button>
-                                                </div>
-                                            </div>
-                                            <div class="overflow-y-auto flex-1 space-y-1">
-                                                <div v-for="source in wechatSources" :key="source.id" class="flex items-center">
-                                                    <input :id="'rule-cb-' + source.id" type="checkbox" :value="source.id" v-model="currentRule.sourceIds" class="h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
-                                                    <label :for="'rule-cb-' + source.id" class="ml-2 block text-sm text-gray-900 truncate" :title="source.name">{{ source.name }}</label>
-                                                </div>
-                                                <div v-if="wechatSources.length === 0" class="text-center text-gray-400 text-xs py-4">暂无公众号源</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- 3. 关键词 -->
-                                <div>
-                                    <h4 class="text-sm font-bold text-gray-700 mb-2 border-l-4 border-purple-600 pl-2">3. 关键词过滤 (可选)</h4>
+                                    <h4 class="text-sm font-bold text-gray-700 mb-2 border-l-4 border-purple-600 pl-2">1. 关键词过滤 (可选)</h4>
                                     <div class="border border-gray-300 rounded-md p-2 bg-white focus-within:ring-1 focus-within:ring-purple-500 focus-within:border-purple-500">
                                         <div class="flex flex-wrap gap-2">
                                             <span v-for="(kw, idx) in currentRule.keywords" :key="idx" class="bg-purple-100 text-purple-800 text-xs font-medium px-2 py-1 rounded flex items-center">
@@ -365,6 +313,62 @@
                                         </div>
                                     </div>
                                     <p class="text-xs text-gray-500 mt-1">同时包含所有关键词的记录才会被保留。留空则不筛选。</p>
+                                </div>
+
+                                <!-- 2. 时间范围 -->
+                                <div>
+                                    <h4 class="text-sm font-bold text-gray-700 mb-2 border-l-4 border-purple-600 pl-2">2. 时间范围</h4>
+                                    <div class="flex gap-4">
+                                        <div class="flex-1">
+                                            <label class="block text-xs text-gray-500 mb-1">开始日期</label>
+                                            <input type="date" v-model="currentRule.start" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
+                                        </div>
+                                        <div class="flex-1">
+                                            <label class="block text-xs text-gray-500 mb-1">结束日期</label>
+                                            <input type="date" v-model="currentRule.end" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 3. 信息源 -->
+                                <div>
+                                    <h4 class="text-sm font-bold text-gray-700 mb-2 border-l-4 border-purple-600 pl-2">3. 信息源</h4>
+                                    
+                                    <div class="flex flex-col md:flex-row gap-4 md:h-60">
+                                        <!-- 官网 -->
+                                        <div class="h-56 md:h-auto md:flex-1 border rounded-md p-2 flex flex-col min-h-0">
+                                            <div class="flex justify-between items-center mb-2 bg-gray-50 px-2 py-1 rounded flex-shrink-0">
+                                                <span class="text-xs font-semibold text-gray-500">官网 / 学院网站</span>
+                                                <div class="space-x-2 text-xs">
+                                                    <button @click="selectAllOfficial" class="text-purple-600 hover:underline">全选</button>
+                                                    <button @click="deselectAllOfficial" class="text-purple-600 hover:underline">清空</button>
+                                                </div>
+                                            </div>
+                                            <div class="overflow-y-auto flex-1 space-y-1">
+                                                <div v-for="source in officialSources" :key="source.id" class="flex items-center">
+                                                    <input :id="'rule-cb-' + source.id" type="checkbox" :value="source.id" v-model="currentRule.sourceIds" class="h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
+                                                    <label :for="'rule-cb-' + source.id" class="ml-2 block text-sm text-gray-900 truncate" :title="source.name">{{ source.name }}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 公众号 -->
+                                        <div class="h-56 md:h-auto md:flex-1 border rounded-md p-2 flex flex-col min-h-0">
+                                            <div class="flex justify-between items-center mb-2 bg-gray-50 px-2 py-1 rounded">
+                                                <span class="text-xs font-semibold text-gray-500">微信公众号</span>
+                                                <div class="space-x-2 text-xs">
+                                                    <button @click="selectAllWechat" class="text-purple-600 hover:underline">全选</button>
+                                                    <button @click="deselectAllWechat" class="text-purple-600 hover:underline">清空</button>
+                                                </div>
+                                            </div>
+                                            <div class="overflow-y-auto flex-1 space-y-1">
+                                                <div v-for="source in wechatSources" :key="source.id" class="flex items-center">
+                                                    <input :id="'rule-cb-' + source.id" type="checkbox" :value="source.id" v-model="currentRule.sourceIds" class="h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
+                                                    <label :for="'rule-cb-' + source.id" class="ml-2 block text-sm text-gray-900 truncate" :title="source.name">{{ source.name }}</label>
+                                                </div>
+                                                <div v-if="wechatSources.length === 0" class="text-center text-gray-400 text-xs py-4">暂无公众号源</div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -403,96 +407,95 @@
                 const sourceList = ref([
                     // 非学院的放最前面
                     { id: 'ndxw', name: '南大新闻' },
+                    { id: 'wechat_MzAxODAzMjQ1NQ==', name: '南京大学' },
+                    { id: 'wechat_MzA4MTQ4MjAwOQ==', name: '南京大学教师教育发展中心' },
                     { id: 'tw', name: '团委' },
                     { id: 'bksy', name: '本科生院' },
                     // 学院顺序如下
                     { id: 'xsxy', name: '新生学院' },
                     { id: 'wxy', name: '文学院' },
+                    { id: 'wechat_MzkzMzYyNjE2Mw==', name: '南大文学院' },
+                    { id: 'wechat_MjM5MjQ3NDkxMQ==', name: 'NJU文院小楼' },
                     { id: 'lsxy', name: '历史学院' },
+                    { id: 'wechat_MzA5MDczMzg2OA==', name: '南京大学历史学院' },
                     { id: 'zxxy', name: '哲学学院' },
+                    { id: 'wechat_MzIwMTA2NzIxNg==', name: '南京大学哲学学院' },
                     { id: 'xwcbxy', name: '新闻传播学院' },
+                    { id: 'wechat_Mzg2NTQ5MzY2OA==', name: '南大新传' },
                     { id: 'fxy', name: '法学院' },
+                    { id: 'wechat_MzIzNDE0MTk4OA==', name: '南京大学法学院' },
                     { id: 'sxy', name: '商学院' },
+                    { id: 'wechat_MzUzMjA2MjU4NA==', name: '南京大学商学院' },
                     { id: 'wgyxy', name: '外国语学院' },
+                    { id: 'wechat_MzkzNjE0MDg0NQ==', name: '南京大学外新社' },
                     { id: 'zfglxy', name: '政府管理学院' },
+                    { id: 'wechat_Mzg2OTkxMjkxOQ==', name: '南京大学政府管理学院' },
                     { id: 'gjgxxy', name: '国际关系学院' },
+                    { id: 'wechat_Mzg2NjY4NDEyMQ==', name: '南京大学国际关系学院' },
                     { id: 'xxglxy', name: '信息管理学院' },
+                    { id: 'wechat_MzkyOTcwNDM4MA==', name: '南京大学信息管理学院' },
                     { id: 'shxy', name: '社会学院' },
+                    { id: 'wechat_MzI1OTA4Mjk3NA==', name: '南京大学社会学院' },
                     { id: 'sxxy', name: '数学学院' },
+                    { id: 'wechat_Mzk2NDI3ODMzNg==', name: '南京大学数学学院' },
                     { id: 'wlxy', name: '物理学院' },
+                    { id: 'wechat_Mzg5NTUxMjg2MA==', name: '南京大学物理学院' },
                     { id: 'twykjkxxy', name: '天文与空间科学学院' },
+                    { id: 'wechat_Mzg2ODI1NDU2OA==', name: '南京大学天文与空间科学学院' },
                     { id: 'hxhgxy', name: '化学化工学院' },
+                    { id: 'wechat_MzIyMjc4ODk2Ng==', name: '南京大学化学化工学院' },
                     { id: 'jsjxy', name: '计算机学院' },
+                    { id: 'wechat_MzU5MDYzMzMwMA==', name: '南京大学计算机学院' },
+                    { id: 'wechat_MzAwMTExODkzMQ==', name: 'NJU计小微' },
                     { id: 'rjxy', name: '软件学院' },
+                    { id: 'wechat_MzAwNDIxMTEwOQ==', name: '南京大学软件学院' },
                     { id: 'rgznxy', name: '人工智能学院' },
+                    { id: 'wechat_MzI1NTYxNTQ2NA==', name: '南京大学人工智能学院' },
                     { id: 'dzkxygcxy', name: '电子科学与工程学院' },
+                    { id: 'wechat_MzUxODA2MTQ5OQ==', name: '南京大学电子科学与工程学院' },
                     { id: 'xdgcyyykxxy', name: '现代工程与应用科学学院' },
+                    { id: 'wechat_MzAxMDU4MTc1Nw==', name: '天下为工' },
+                    { id: 'wechat_MzAwNTUyNDE4OA==', name: '南大BME' },
                     { id: 'hjxy', name: '环境学院' },
+                    { id: 'wechat_MzAxMDA0NTc4Ng==', name: '南京大学环境学院' },
                     { id: 'dqkxygcxy', name: '地球科学与工程学院' },
+                    { id: 'wechat_MzkxNzYwMzU0Ng==', name: '南京大学地球科学与工程学院' },
                     { id: 'dlyhykxxy', name: '地理与海洋科学学院' },
+                    { id: 'wechat_MzIwNzQ0NzI0NQ==', name: 'NJU地理海洋之声' },
                     { id: 'dqkxxy', name: '大气科学学院'},
+                    { id: 'wechat_MzAwNjE1OTUzNQ==', name: '南京大学大气科学学院' },
                     { id: 'nhxy', name: '南京赫尔辛基大气与地球系统科学学院（南赫学院）' },
+                    { id: 'wechat_MzkyNTU3NTM3Mw==', name: '南京大学南赫学院' },
                     { id: 'smkxxy', name: '生命科学学院' },
+                    { id: 'wechat_MzAxNzUwMzI5NA==', name: '南京大学生命科学学院' },
                     { id: 'yxy', name: '医学院' },
+                    { id: 'wechat_MzkwMDI4NjgwOA==', name: '南京大学医学院' },
                     { id: 'gcglxy', name: '工程管理学院' },
+                    { id: 'wechat_MzIwMzM4NzkyNA==', name: '南京大学工程管理学院' },
                     { id: 'kymxy', name: '匡亚明学院' },
+                    { id: 'wechat_MzkwNTU3MTA3OA==', name: '南京大学匡亚明学院' },
+                    { id: 'wechat_MzAwNzA1Njk0MA==', name: 'DII学生助手' },
                     { id: 'hwjyxy', name: '海外教育学院' },
+                    { id: 'wechat_MzUzNDAxMDA5Mw==', name: '南大海外' },
                     { id: 'arch', name: '建筑与城市规划学院' },
+                    { id: 'wechat_MzU1Mzc0NTU5OA==', name: '南京大学建筑与城市规划学院' },
                     { id: 'mkszyxy', name: '马克思主义学院' },
+                    { id: 'wechat_Mzk4ODAyMDA5MA==', name: '南京大学马克思主义学院' },
                     { id: 'ysxy', name: '艺术学院' },
+                    { id: 'wechat_MzA3MjcyNTM3OQ==', name: '南京大学艺术学院' },
                     { id: 'znkxyjsxy', name: '智能科学与技术学院' },
+                    { id: 'wechat_Mzk0NzQyNjA5Mg==', name: '南京大学智能科学与技术学院' },
                     { id: 'znrjygcxy', name: '智能软件与工程学院' },
+                    { id: 'wechat_MzkyNzg1ODAxOQ==', name: '南京大学智能软件与工程学院' },
                     { id: 'jcdlxy', name: '集成电路学院' },
+                    { id: 'wechat_Mzg4Nzk1NDA2OA==', name: '南京大学集成电路学院' },
                     { id: 'szjjyglxy', name: '数字经济与管理学院' },
+                    { id: 'wechat_Mzg2NTk4MTc4Mg==', name: '南京大学数字经济与管理学院' },
                     { id: 'nyyzyxy', name: '能源与资源学院' },
+                    { id: 'wechat_MzkwOTYwNjc0NQ==', name: '南京大学能源与资源学院' },
                     { id: 'jqryzdhxy', name: '机器人与自动化学院' },
                     { id: 'wlkxy', name: '未来技术学院' },
                     { id: 'qykxxy', name: '前沿科学学院' },
-                    // 微信公众号
-                    { id: 'wechat_MzkzMzYyNjE2Mw==', name: '南大文学院' },
-                    { id: 'wechat_MjM5MjQ3NDkxMQ==', name: 'NJU文院小楼' },
-                    { id: 'wechat_MzA5MDczMzg2OA==', name: '南京大学历史学院' },
-                    { id: 'wechat_MzIwMTA2NzIxNg==', name: '南京大学哲学学院' },
-                    { id: 'wechat_Mzg2NTQ5MzY2OA==', name: '南大新传' },
-                    { id: 'wechat_MzIzNDE0MTk4OA==', name: '南京大学法学院' },
-                    { id: 'wechat_MzUzMjA2MjU4NA==', name: '南京大学商学院' },
-                    { id: 'wechat_MzkzNjE0MDg0NQ==', name: '南京大学外新社' },
-                    { id: 'wechat_Mzg2OTkxMjkxOQ==', name: '南京大学政府管理学院' },
-                    { id: 'wechat_Mzg2NjY4NDEyMQ==', name: '南京大学国际关系学院' },
-                    { id: 'wechat_MzkyOTcwNDM4MA==', name: '南京大学信息管理学院' },
-                    { id: 'wechat_MzI1OTA4Mjk3NA==', name: '南京大学社会学院' },
-                    { id: 'wechat_Mzk2NDI3ODMzNg==', name: '南京大学数学学院' },
-                    { id: 'wechat_Mzg5NTUxMjg2MA==', name: '南京大学物理学院' },
-                    { id: 'wechat_Mzg2ODI1NDU2OA==', name: '南京大学天文与空间科学学院' },
-                    { id: 'wechat_MzIyMjc4ODk2Ng==', name: '南京大学化学化工学院' },
-                    { id: 'wechat_MzU5MDYzMzMwMA==', name: '南京大学计算机学院' },
-                    { id: 'wechat_MzAwNDIxMTEwOQ==', name: '南京大学软件学院' },
-                    { id: 'wechat_MzI1NTYxNTQ2NA==', name: '南京大学人工智能学院' },
-                    { id: 'wechat_MzUxODA2MTQ5OQ==', name: '南京大学电子科学与工程学院' },
-                    { id: 'wechat_MzAxMDU4MTc1Nw==', name: '天下为工' },
-                    { id: 'wechat_MzAxMDA0NTc4Ng==', name: '南京大学环境学院' },
-                    { id: 'wechat_MzkxNzYwMzU0Ng==', name: '南京大学地球科学与工程学院' },
-                    { id: 'wechat_MzIwNzQ0NzI0NQ==', name: 'NJU地理海洋之声' },
-                    { id: 'wechat_MzAwNjE1OTUzNQ==', name: '南京大学大气科学学院' },
-                    { id: 'wechat_MzkyNTU3NTM3Mw==', name: '南京大学南赫学院' },
-                    { id: 'wechat_MzAxNzUwMzI5NA==', name: '南京大学生命科学学院' },
-                    { id: 'wechat_MzkwMDI4NjgwOA==', name: '南京大学医学院' },
-                    { id: 'wechat_MzIwMzM4NzkyNA==', name: '南京大学工程管理学院' },
-                    { id: 'wechat_MzkwNTU3MTA3OA==', name: '南京大学匡亚明学院' },
-                    { id: 'wechat_MzUzNDAxMDA5Mw==', name: '南大海外' },
-                    { id: 'wechat_MzU1Mzc0NTU5OA==', name: '南京大学建筑与城市规划学院' },
-                    { id: 'wechat_Mzk4ODAyMDA5MA==', name: '南京大学马克思主义学院' },
-                    { id: 'wechat_MzA3MjcyNTM3OQ==', name: '南京大学艺术学院' },
-                    { id: 'wechat_Mzk0NzQyNjA5Mg==', name: '南京大学智能科学与技术学院' },
-                    { id: 'wechat_MzkyNzg1ODAxOQ==', name: '南京大学智能软件与工程学院' },
-                    { id: 'wechat_Mzg4Nzk1NDA2OA==', name: '南京大学集成电路学院' },
-                    { id: 'wechat_Mzg2NTk4MTc4Mg==', name: '南京大学数字经济与管理学院' },
-                    { id: 'wechat_MzkwOTYwNjc0NQ==', name: '南京大学能源与资源学院' },
-                    { id: 'wechat_MzAwNzA1Njk0MA==', name: 'DII学生助手' },
-                    { id: 'wechat_MzAwNTUyNDE4OA==', name: '南大BME' },
-                    { id: 'wechat_MzAwMTExODkzMQ==', name: 'NJU计小微' },
-                    { id: 'wechat_MzAxODAzMjQ1NQ==', name: '南京大学' },
-                    { id: 'wechat_MzA4MTQ4MjAwOQ==', name: '南京大学教师教育发展中心' },
                 ]);
 
                 // 规则相关状态
@@ -792,43 +795,47 @@
                     const listFontSize = bodyFontSize;
 
                     let htmlContent = `
-                        <!DOCTYPE html>
-                        <html lang="zh-CN">
+                        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
                         <head>
-                            <meta charset="UTF-8">
+                            <meta charset="utf-8">
                             <title>南京大学教育资讯</title>
+                            <!--[if gte mso 9]>
+                            <xml>
+                            <w:WordDocument>
+                                <w:View>Print</w:View>
+                                <w:Zoom>100</w:Zoom>
+                                <w:DoNotOptimizeForBrowser/>
+                            </w:WordDocument>
+                            </xml>
+                            <![endif]-->
                             <style>
-                                body { font-family: 'SimSun','宋体',serif; font-size: ${bodyFontSize}; }
-                                h1 { text-align: center; font-family: 'SimHei','宋体',sans-serif; font-size: ${h1FontSize}; margin: 16px 0; }
-                                h2 { font-family: 'SimHei','宋体',sans-serif; font-size: ${h2FontSize}; margin-top: 18px; margin-bottom: 8px; }
-                                ul { list-style-type: none; padding-left: 24px; font-size: ${listFontSize}; }
-                                li { margin-bottom: 6px; }
-                                p { margin-left: 24px; color: #555; font-size: ${bodyFontSize}; }
-                                a { color: #0000FF; text-decoration: none; font-size: ${bodyFontSize}; }
+                                body { font-family: 'SimSun','宋体',serif; font-size: ${bodyFontSize}; word-wrap: break-word; word-break: break-all; }
+                                p.title { text-align: center; font-family: 'SimHei','宋体',sans-serif; font-size: ${h1FontSize}; font-weight: bold; margin: 16px 0; }
+                                p.subtitle { font-family: 'SimHei','宋体',sans-serif; font-size: ${h2FontSize}; font-weight: bold; margin-top: 18px; margin-bottom: 8px; }
+                                p.content { margin-left: 24px; color: #555; font-size: ${bodyFontSize}; line-height: 1.5; word-wrap: break-word; word-break: break-all; }
+                                a { color: #0000FF; text-decoration: underline; font-size: ${bodyFontSize}; word-wrap: break-word; word-break: break-all; }
                             </style>
                         </head>
                         <body>
-                            <h1>南京大学教育资讯</h1>
+                            <p class="title"><b>南京大学教育资讯</b></p>
                     `;
 
                     groupedResults.value.forEach((source, index) => {
-                        htmlContent += `<h2>${index + 1}. ${source.name}：</h2>`;
+                        htmlContent += `<p class="subtitle"><b>${index + 1}. ${source.name}：</b></p>`;
                         
                         if (source.items.length === 0) {
-                            htmlContent += `<p> 无相关推送</p>`;
+                            htmlContent += `<p class="content">• 无相关推送</p>`;
                         } else {
-                            htmlContent += `<ul>`;
                             source.items.forEach(item => {
                                 const clean = cleanUrl(item.url);
-                                htmlContent += `<li> ${item.title} <a href="${clean}">${clean}</a></li>`;
+                                htmlContent += `<p class="content">• ${item.title}<br/><a href="${clean}">${clean}</a></p>`;
                             });
-                            htmlContent += `</ul>`;
                         }
                     });
 
                     htmlContent += `</body></html>`;
                     
-                    const blob = new Blob([htmlContent], { type: "application/msword;charset=utf-8" });
+                    const blob = new Blob(['\ufeff', htmlContent], { type: "application/msword;charset=utf-8" });
                     saveAs(blob, `南京大学教育资讯_导出.doc`);
                 };
 
