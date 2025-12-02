@@ -35,26 +35,39 @@ CREATE INDEX IF NOT EXISTS idx_crawled_records_url ON crawled_records(url); -- �
 def query_records(source_ids: list, start_time: str, end_time: str) -> list:
     """
     查询指定 source_ids（列表）相关的所有记录，时间范围为 start_time 到 end_time。
-    自动查找 config 目录下所有 json 文件，加载 sources 列表中的所有 id。
+    - 对于以 'wechat_' 开头的 source_id，直接作为查询条件。
+    - 对于其他 source_id，查找 config/sources/ 目录下对应的 json 文件，加载其中定义的所有 id。
     返回结果为 JSON 格式的列表。
     """
-    # 1. 查找 config 目录下所有 json 文件，收集所有 sources 的 id
-    config_files = []
-    for src in source_ids:
-        config_files.extend(glob.glob(f"config/sources/{src}.json"))
     all_ids = []
-    for file in config_files:
-        try:
-            with open(file, encoding="utf-8") as f:
-                data = json.load(f)
-            for src in data.get("sources", []):
-                sid = src.get("id")
-                if sid:
-                    all_ids.append(sid)
-        except Exception:
-            continue
+    
+    # 分离直接查询的ID和需要查找配置文件的ID
+    direct_ids = [sid for sid in source_ids if sid.startswith("wechat_")]
+    config_ids = [sid for sid in source_ids if not sid.startswith("wechat_")]
+    
+    # 1. 处理直接查询的ID
+    all_ids.extend(direct_ids)
+    
+    # 2. 处理需要查找配置文件的ID
+    if config_ids:
+        config_files = []
+        for src in config_ids:
+            config_files.extend(glob.glob(f"config/sources/{src}.json"))
+        
+        for file in config_files:
+            try:
+                with open(file, encoding="utf-8") as f:
+                    data = json.load(f)
+                for src in data.get("sources", []):
+                    sid = src.get("id")
+                    if sid:
+                        all_ids.append(sid)
+            except Exception:
+                continue
+                
     if not all_ids:
         return []
+        
     # 3. 查询数据库
     results = []
     with sqlite3.connect(DATABASE_PATH) as conn:
