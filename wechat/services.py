@@ -42,7 +42,8 @@ def parse_wechat_article(html: str) -> str:
 	if match:
 		try:
 			ts = float(match.group(1))
-			create_time = datetime.fromtimestamp(ts, tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+			# 仅保留年月日
+			create_time = datetime.fromtimestamp(ts, tz=timezone.utc).strftime("%Y-%m-%d")
 		except Exception:
 			create_time = match.group(1)
 
@@ -224,7 +225,26 @@ async def crawl_single_article(url: str, source_id: Optional[str] = None, source
 	meta = parse_wechat_article(html)
 	content = meta.get("Content", "")
 	title = meta.get("Title", "")
-	create_time = meta.get("Time", datetime.now(timezone.utc))
+	
+	# 确保 create_time 是 datetime 对象，且仅包含日期部分
+	raw_time = meta.get("Time")
+	if isinstance(raw_time, str):
+		try:
+			# 尝试解析字符串时间，兼容带时分秒和不带时分秒的格式
+			clean_time = raw_time.strip()
+			if len(clean_time) <= 10:
+				dt = datetime.strptime(clean_time, "%Y-%m-%d")
+			else:
+				dt = datetime.strptime(clean_time, "%Y-%m-%d %H:%M:%S")
+			create_time = dt.replace(hour=0, minute=0, second=0, microsecond=0, tzinfo=timezone.utc)
+		except ValueError:
+			# 如果解析失败，使用当前时间并归零
+			create_time = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+	elif isinstance(raw_time, datetime):
+		create_time = raw_time.replace(hour=0, minute=0, second=0, microsecond=0)
+	else:
+		create_time = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+
 	item_id = compute_sha256((content or "")[:500], url)
 
 	exists = await asyncio.to_thread(database.record_exists, item_id)
@@ -240,7 +260,7 @@ async def crawl_single_article(url: str, source_id: Optional[str] = None, source
 		"source_id": store_source_id,
 		"source_name": store_source_name,
 		"title": title,
-		"publish_time": create_time,
+		"publish_time": create_time.strftime("%Y-%m-%d"),
 		"attachments": None,
 	}
 
