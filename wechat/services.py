@@ -1,15 +1,16 @@
 from __future__ import annotations
 
+import asyncio
 import hashlib
+import json
+import os
 import re
 import requests
-import json
-import asyncio
 from datetime import datetime, timezone
-from typing import List, Optional,Dict
+from typing import Any, Dict, List, Optional
 from bs4 import BeautifulSoup
 
-from .config import WECHAT_SOURCES, WECHAT_SESSION, REQUEST_TIMEOUT
+from .config import WECHAT_SOURCES, WECHAT_SESSION, REQUEST_TIMEOUT, SESSION_FILE
 from crawler.models import CrawlItem
 from storage import database
 
@@ -63,16 +64,41 @@ def _extract_publish_datetime(html: str) -> tuple[Optional[datetime], Optional[s
 	return None, None
 
 
+def upsert_session(payload: Dict[str, Any]) -> Dict[str, Any]:
+	"""Persist session payload to cfg/session.json and refresh in-memory session."""
+	if not isinstance(payload, dict):
+		raise ValueError("session payload must be a JSON object")
+	cleaned = {k: v for k, v in payload.items() if v is not None}
+	if not cleaned:
+		raise ValueError("session payload cannot be empty")
+	now = datetime.now(timezone.utc)
+	cleaned.setdefault("saved_at", now.strftime("%Y-%m-%d %H:%M:%S UTC"))
+	expiry_value = cleaned.get("expiry")
+	if expiry_value and not cleaned.get("expiry_human"):
+		try:
+			expiry_int = int(expiry_value)
+			cleaned["expiry"] = expiry_int
+			cleaned["expiry_human"] = datetime.fromtimestamp(expiry_int, tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+		except (ValueError, OSError, OverflowError):
+			pass
+	os.makedirs(os.path.dirname(SESSION_FILE), exist_ok=True)
+	with open(SESSION_FILE, "w", encoding="utf-8") as fp:
+		json.dump(cleaned, fp, ensure_ascii=False, indent=2)
+	WECHAT_SESSION.clear()
+	WECHAT_SESSION.update(cleaned)
+	return cleaned
+
+
 def compute_sha256(*segments: Optional[str]) -> str:
 	payload = "\n".join(segment or "" for segment in segments)
 	return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
-def parse_wechat_article(html: str) -> Dict[str, str]:
+def parse_wechat_article(html: str) -> Dict[str, Any]:
 	"""Parse a WeChat article HTML and return aggregated text content."""
 	soup = BeautifulSoup(html, "lxml")
 	if "当前环境异常" in html:
-		return "Error: WeChat environment exception (verification required)"
+		return {"Error": "WeChat environment exception (verification required)", "Content": ""}
 
 	content_div = soup.find("div", class_="rich_media_content")
 	content = content_div.get_text("\n", strip=True) if content_div else ""
@@ -85,7 +111,7 @@ def parse_wechat_article(html: str) -> Dict[str, str]:
 
 	publish_dt, raw_time = _extract_publish_datetime(html)
 
-	meta = {}
+	meta: Dict[str, Any] = {}
 	if title_text:
 		meta["Title"]=title_text
 	if author_text:

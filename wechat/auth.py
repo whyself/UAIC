@@ -16,7 +16,7 @@ QR_SAVE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'w
 
 # OUTPUT_JSON => project_root/cfg/cookies.json
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUTPUT_JSON = os.path.join(PROJECT_ROOT, "cfg", "cookies.json")
+OUTPUT_JSON = os.path.join(PROJECT_ROOT, "cfg", "session.json")
 
 
 def wait_first_image_loaded(driver, timeout=20):
