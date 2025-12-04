@@ -596,84 +596,18 @@ def compute_sha256(*segments: Optional[str]) -> str:
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
-def format_wechat_content(content_div) -> str:
-    """
-    Format WeChat article content to preserve structure and images.
-    Replaces <br> with newlines, handles images as markdown, and ensures paragraphs are separated.
-    """
-    if not content_div:
-        return ""
-        
-    # 1. Replace <br> with newline
-    for br in content_div.find_all("br"):
-        br.replace_with("\n")
-        
-    # 2. Handle Images
-    for img in content_div.find_all("img"):
-        src = img.get("data-src") or img.get("src")
-        if src:
-            # Insert newline before and after image to ensure it's on its own line
-            img.replace_with(f"\n![图片]({src})\n")
-            
-    # 3. Handle Block Elements: Ensure they are separated by newlines
-    # Append a newline to block elements to ensure separation when text is extracted
-    for tag in content_div.find_all(["p", "section", "h1", "h2", "h3", "h4", "h5", "h6", "li", "div", "blockquote"]):
-        tag.append("\n")
-        
-    # 4. Get text with no separator (relying on our inserted newlines)
-    # We use strip=False to preserve the newlines we added, but we'll clean up later
-    text = content_div.get_text(separator="", strip=False)
-    
-    # 5. Post-processing
-    # Split by lines, strip each line to remove excessive spaces (but keep the line structure)
-    lines = [line.strip() for line in text.split('\n')]
-    
-    # Remove empty lines
-    lines = [line for line in lines if line]
-    
-    # Join with single newline as requested
-    return "\n".join(lines)
-
-
 def parse_wechat_article(html: str) -> tuple[str, List[Attachments]]:
     """Parse WeChat official account article."""
-    soup = BeautifulSoup(html, "lxml")
+    # Delegate to the robust implementation in wechat module
+    # Import here to avoid potential circular imports if wechat.services eventually imports crawler.services
+    from wechat.services import parse_wechat_article as parse_impl
     
-    # Check for deleted content markers
-    if any(marker in html for marker in ["此内容已被发布者删除", "此内容因违规无法查看", "该内容已被发布者删除"]):
-        return "Error: Content deleted", []
-
-    if "当前环境异常" in html:
-        return "Error: WeChat environment exception (verification required)", []
-
-    content_div = soup.find("div", class_="rich_media_content")
-    if not content_div:
-        content_div = soup.find("div", id="js_content")
-        
-    if content_div:
-        content = content_div.get_text("\n", strip=True)
-    else:
-        content = ""
-
-    if not content:
-        # Fallback to meta description for share pages or protected pages
-        meta_desc = soup.find("meta", property="og:description")
-        if not meta_desc:
-            meta_desc = soup.find("meta", attrs={"name": "description"})
-        
-        content = meta_desc.get("content", "") if meta_desc else ""
-        
-        # If content is still empty, try to get the cover image (for image-only share pages)
-        if not content:
-            og_image = soup.find("meta", property="og:image")
-            if not og_image:
-                # Try attrs search as fallback
-                og_image = soup.find("meta", attrs={"property": "og:image"})
-            
-            if og_image and og_image.get("content"):
-                content = f"【图片内容】\n![Image]({og_image.get('content')})"
+    meta = parse_impl(html)
     
-    return content, []
+    if meta.get("Error"):
+        return meta["Error"], []
+        
+    return meta.get("Content", ""), []
 
 
 def resolve_detail_selector(detail_url: str) -> Optional[dict]:
