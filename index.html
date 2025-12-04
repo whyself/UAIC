@@ -655,10 +655,12 @@
                         rules.value[editingRuleIndex.value] = ruleData;
                     }
                     closeRuleModal();
+                    fetchData();
                 };
 
                 const removeRule = (index) => {
                     rules.value.splice(index, 1);
+                    fetchData();
                 };
 
                 const getSourceNames = (ids) => {
