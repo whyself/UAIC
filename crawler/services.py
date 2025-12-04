@@ -604,7 +604,31 @@ def parse_wechat_article(html: str) -> tuple[str, List[Attachments]]:
         return "Error: WeChat environment exception (verification required)", []
 
     content_div = soup.find("div", class_="rich_media_content")
-    content = content_div.get_text("\n", strip=True) if content_div else ""
+    if not content_div:
+        content_div = soup.find("div", id="js_content")
+        
+    if content_div:
+        content = content_div.get_text("\n", strip=True)
+    else:
+        content = ""
+
+    if not content:
+        # Fallback to meta description for share pages or protected pages
+        meta_desc = soup.find("meta", property="og:description")
+        if not meta_desc:
+            meta_desc = soup.find("meta", attrs={"name": "description"})
+        
+        content = meta_desc.get("content", "") if meta_desc else ""
+        
+        # If content is still empty, try to get the cover image (for image-only share pages)
+        if not content:
+            og_image = soup.find("meta", property="og:image")
+            if not og_image:
+                # Try attrs search as fallback
+                og_image = soup.find("meta", attrs={"property": "og:image"})
+            
+            if og_image and og_image.get("content"):
+                content = f"【图片内容】\n![Image]({og_image.get('content')})"
     
     return content, []
 

@@ -103,8 +103,31 @@ def parse_wechat_article(html: str) -> Dict[str, Any]:
 	content_div = soup.find("div", class_="rich_media_content")
 	content = content_div.get_text("\n", strip=True) if content_div else ""
 
+	if not content:
+		# Fallback to meta description for share pages or protected pages
+		meta_desc = soup.find("meta", property="og:description")
+		if not meta_desc:
+			meta_desc = soup.find("meta", attrs={"name": "description"})
+		
+		content = meta_desc.get("content", "") if meta_desc else ""
+
+		# If content is still empty, try to get the cover image (for image-only share pages)
+		if not content:
+			og_image = soup.find("meta", property="og:image")
+			if not og_image:
+				# Try attrs search as fallback
+				og_image = soup.find("meta", attrs={"property": "og:image"})
+			
+			if og_image and og_image.get("content"):
+				content = f"【图片内容】\n![Image]({og_image.get('content')})"
+
 	title = soup.find("h1", class_="rich_media_title")
 	title_text = title.get_text(strip=True) if title else ""
+
+	if not title_text:
+		meta_title = soup.find("meta", property="og:title")
+		if meta_title:
+			title_text = meta_title.get("content", "")
 
 	author = soup.find("a", id="js_name")
 	author_text = author.get_text(strip=True) if author else ""
