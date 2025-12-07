@@ -1,88 +1,3 @@
-# nju_crawler
-## 环境要求
-- Python 3.8 及以上
-- Windows 操作系统（建议）
-- 浏览器驱动（如 geckodriver for Firefox）
-- 推荐使用虚拟环境
-- 微信你得有微信公众平台账号，可以去[微信公众平台](https://mp.weixin.qq.com/)注册
-## 快速开始（开发环境搭建）
-
-1. 创建并激活虚拟环境：
-   ```powershell
-   python -m venv venv
-   .\venv\Scripts\activate
-   ```
-
-2. 安装依赖：
-   ```powershell
-   pip install -r requirements.txt
-   ```
-
-3. 下载并配置浏览器驱动（如 geckodriver），确保其在系统 PATH 中。
-
-   可以通过命令行安装：  
-   ```
-   winget install Mozilla.Firefox
-   ```
-   或手动前往 [Firefox 官网](https://www.mozilla.org/zh-CN/firefox/new/) 下载并安装。
-   geckodriver 是 Firefox 的 WebDriver，Selenium 需要它来驱动浏览器。  
-   - 推荐命令行安装：  
-     ```
-     winget install mozilla.geckodriver
-     ```
-   - 或手动下载：[geckodriver Releases](https://github.com/mozilla/geckodriver/releases)  
-     下载后将 `geckodriver.exe` 放到你的项目目录或添加到系统 PATH 环境变量中。
-
-4. 配置环境变量（推荐使用 .env 文件）
-   - 在项目根目录新建 `.env` 文件，内容参考如下：
-     ```env
-     CRAWL_INTERVAL=3600
-     REQUEST_TIMEOUT=30
-     MAX_RETRIES=3
-     AUTO_CRAWL_ENABLED=true
-     VECTOR_SYNC_ENABLED=false
-     TESSERACT_CMD=
-     TESSDATA_DIR=
-     CRAWLER_DB_PATH=./data/crawler.db
-     ```
-   - 所有配置项均可通过 `.env` 文件注入，无需硬编码在 config.py。
-   - 推荐使用 [python-dotenv](https://github.com/theskumar/python-dotenv) 自动加载 `.env` 文件。
-
-5. 启动主应用（独立服务模式）：
-   ```powershell
-   python main.py
-   # 或
-   uvicorn main:app --reload
-   ```
-
-6. 打开 API 文档：
-   - Swagger UI: http://127.0.0.1:8000/docs
-   - ReDoc: http://127.0.0.1:8000/redoc
-
-## 目录结构说明
-- `crawler/`：爬虫模块主包，包含所有核心代码
-- `config/sources/`：爬虫源配置文件目录，每个学院/部门一个 JSON 文件
-- `main.py`：主应用入口，可直接运行
-- `test_config.py`：用于测试 JSON 配置文件的脚本
-- `requirements.txt`：依赖列表
-- `venv/`：虚拟环境目录（自动生成，无需提交到Git）
-- `.env`：环境变量配置文件（敏感信息请勿提交到Git）
-
-## 添加新的爬取源
-
-1. 在 `config/sources/` 目录下创建一个新的 JSON 文件（例如 `chem.json`）。
-2. 参照现有的 JSON 文件（如 `bksy.json`）填写 `sources` 和 `detail_selectors`。
-3. 运行测试脚本验证配置：
-   ```powershell
-   python test_config.py config/sources/chem.json <source_id>
-   ```
-   例如：
-   ```powershell
-   python test_config.py config/sources/bksy.json bksy_ggtz
-   ```
-
-## 项目目录结构
-
 ```
 nju_crawler/
 ├─ main.py                # 主应用入口
@@ -109,17 +24,167 @@ nju_crawler/
 └─ ...
 ```
 
-- `crawler/`：学院官网爬虫相关代码
-- `wechat/`：公众号爬虫相关代码
-- `storage/`：数据库与通用API，crawler/wechat均可调用
-- `main.py`：主应用入口，统一挂载各模块路由
+# 南京大学教育资讯爬虫平台（nju_crawler）
 
-## 协作开发建议
-- 每位开发者建议使用虚拟环境，避免依赖冲突
-- 新增依赖请写入 `requirements.txt`，并及时同步
-- 数据库配置请勿提交敏感信息到 Git，可用 `.env` 管理
-- 统一通过 `main.py` 或集成到其他 FastAPI 项目
-- 如需迁移历史数据，可用 CSV 导出/导入工具
+本项目为南京大学教育资讯聚合与爬取平台，支持自动采集各学院官网及微信公众号的新闻、通知等内容，并通过统一 API 提供查询与导出。
 
 ---
-如有问题请联系项目维护者.
+
+## 一、环境准备
+
+- Python 3.8 及以上（推荐 3.10+）
+- Windows/Linux/macOS 均可运行
+- 推荐使用虚拟环境（venv）
+- 浏览器驱动（如 geckodriver for Firefox，需配合 Selenium 使用）
+- 微信公众号采集需有相关权限
+
+### 依赖安装
+
+1. 创建并激活虚拟环境：
+   ```bash
+   python -m venv venv
+   # Linux/macOS
+   source venv/bin/activate
+   # Windows
+   .\venv\Scripts\activate
+   ```
+2. 安装依赖：
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. 安装浏览器与驱动（以 Firefox/geckodriver 为例）：
+   - [下载 Firefox 浏览器](https://www.mozilla.org/zh-CN/firefox/new/)
+   - [下载 geckodriver](https://github.com/mozilla/geckodriver/releases)
+   - 将 geckodriver 放入项目目录或系统 PATH
+
+4. 配置环境变量（可选，推荐 .env 文件）：
+   在项目根目录新建 `.env`，如：
+   ```env
+   CRAWL_INTERVAL=3600
+   REQUEST_TIMEOUT=30
+   MAX_RETRIES=3
+   AUTO_CRAWL_ENABLED=true
+   CRAWLER_DB_PATH=./data/crawler.db
+   ```
+
+---
+
+## 二、项目启动
+
+1. 启动主服务：
+   ```bash
+   python main.py
+   # 或开发模式
+   uvicorn main:app --reload
+   ```
+2. 访问 API 文档：
+   - Swagger UI: http://127.0.0.1:8000/docs
+   - ReDoc: http://127.0.0.1:8000/redoc
+
+---
+
+## 三、目录结构说明
+
+```
+nju_crawler/
+├─ main.py                # 主应用入口
+├─ requirements.txt       # 依赖列表
+├─ .env                   # 环境变量配置
+├─ crawler/               # 官网爬虫模块
+├─ wechat/                # 公众号爬虫模块
+├─ storage/               # 数据库与API
+├─ config/sources/        # 官网与公众号源配置
+└─ ...
+```
+
+---
+
+## 四、自定义与添加数据源
+
+### 1. 添加/自定义官网源
+
+所有官网源配置均位于 `config/sources/` 目录下，每个学院/部门一个 JSON 文件（如 `arch.json`）。
+
+**步骤：**
+1. 复制或新建一个 JSON 文件（如 `mycollege.json`）。
+2. 按如下结构填写：
+   ```json
+   {
+     "sources": [
+       {
+         "id": "mycollege_news",
+         "name": "我的学院-新闻",
+         "type": "api",  // 或 html
+         "base_url": "https://mycollege.nju.edu.cn",
+         "list_url": "https://mycollege.nju.edu.cn/news/index.html",
+         "pagination_mode": "api",  // 或 html
+         "api_url": "https://mycollege.nju.edu.cn/api/news",
+         "max_pages": 3,
+         "headers": { ... },
+         "payload": { ... },
+         "selectors": {
+           "item_container": "infolist",
+           "title": "title",
+           "date": "releasetime",
+           "url": "url"
+         }
+       }
+     ]
+   }
+   ```
+3. 主要字段说明：
+   - `id`：唯一标识，建议格式为“学院缩写_栏目名”
+   - `type`：数据获取方式，支持 `api` 或 `html`（页面解析）
+   - `selectors`：用于定位新闻列表、标题、时间、链接等字段的 CSS 选择器或 JSON 路径
+   - 其他字段可参考现有配置
+4. 配置完成后，可用如下命令测试：
+   ```bash
+   python test_config.py config/sources/mycollege.json mycollege_news
+   ```
+
+### 2. 添加/自定义公众号源
+
+所有公众号源配置在 `config/sources/wechat.json` 文件中，为一个数组，每个对象代表一个公众号。
+
+**步骤：**
+1. 打开 `config/sources/wechat.json`，按如下格式添加：
+   ```json
+   {
+     "id": "wechat_xxxxxxxx",
+     "name": "我的公众号",
+     "biz": "xxxxxxxx",
+     "count": 5,
+     "created_at": 1234567890
+   }
+   ```
+   - `id`：格式为 `wechat_` + 公众号 biz 字段
+   - `name`：公众号名称
+   - `biz`：公众号唯一标识，可通过抓包或第三方工具获取
+   - `count`：每次采集的推文数量
+   - `created_at`：添加时间戳
+2. 保存后，重启服务即可生效。
+
+---
+
+## 五、常见问题与建议
+
+- **依赖安装慢？** 可使用阿里云源：
+  ```bash
+  pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+  ```
+- **Selenium 报错？** 检查浏览器与驱动版本匹配，驱动需在 PATH。
+- **公众号采集失败？** 需有对应权限，biz 可通过抓包获取。
+- **API 无数据？** 检查 config/sources/ 下的配置文件与源站点结构是否一致。
+
+---
+
+## 六、协作与开发规范
+
+- 推荐每位开发者使用虚拟环境，避免依赖冲突
+- 新增依赖请写入 `requirements.txt` 并同步
+- 敏感信息（如数据库路径、API 密钥）请用 `.env` 管理，勿提交到 Git
+- 统一通过 `main.py` 启动或集成到其他 FastAPI 项目
+
+---
+
+如有问题请联系项目维护者。
